@@ -1,0 +1,134 @@
+Tablayout详解和Palatte应用（NavigationView和DrawerLayout  ToolBar）
+
+tabyout
+
+TabPageIndicator
+
+	Tablayout
+    我们在应用viewpager的时候，经常会使用自定义控件或是TabPageIndicator来与其配合。达到很漂亮的效果。但是TabPageIndicator是第三方的，而且比较老了，当然了现在很多大神都已经开始自己写TabPageIndicator来满足自己的需求，在2015年的google大会上，google发布了新的Android Support Design库，里面包含了几个新的控件，其中就有一个TabLayout，它就可以完成TabPageIndicator的效果，而且还是官方的，最好的是它可以兼容到2.2以上版本，包括2.2
+	
+	
+	 android.widget.Tablelayout
+	 
+	design
+	TabLayout
+	
+	
+	TabLayout的基本使用
+    1 在应用的build.gradle中添加support:design支持库
+2 创建activity_weibo_timeline.xml文件，在布局文件中添加TabLayout及ViewPager：
+7.Tab的模式
+数据很多的时候我们应该怎么办呢，简书中的第二个Tab就是可以滑动的：
+我们先多加几个tab：
+超过屏幕之外了
+然后设置属性为：
+app:tabMode="scrollable"（默认是fixed：固定的，标签很多时候会被挤压，不能滑动。）
+
+1.改变选中字体的颜色	（觉得选中的颜色不好看	）
+app:tabSelectedTextColor="@android:color/holo_orange_light"
+
+改变未选中字体的颜色
+app:tabTextColor="@color/colorPrimary"
+
+改变指示器下标的颜色
+app:tabIndicatorColor="@android:color/holo_orange_light"
+
+改变整个TabLayout的颜色
+app:tabBackground="color"
+
+改变TabLayout内部字体大小app:tabTextAppearance="@android:style/TextAppearance.Holo.Large"//设置文字的外貌
+
+
+改变指示器下标的高度
+app:tabIndicatorHeight="4dp"
+
+有时候Tab只有文字感觉有点单调了
+tabLayout.addTab(tabLayout.newTab().setText("Tab 1").setIcon(R.mipmap.ic_launcher));	
+
+
+
+8.加入Padding
+设置Tab内部的子控件的Padding：
+
+app:tabPadding="xxdp"
+app:tabPaddingTop="xxdp"
+app:tabPaddingStart="xxdp"
+app:tabPaddingEnd="xxdp"
+app:tabPaddingBottom="xxdp"
+
+设置整个TabLayout的Padding：
+app:paddingEnd="xxdp"
+app:paddingStart="xxdp"
+9.内容的显示模式
+app:tabGravity="center"//居中，如果是fill，则是充满
+
+10.Tab的宽度限制
+设置最大的tab宽度：
+app:tabMaxWidth="xxdp"	
+设置最小的tab宽度：
+app:tabMinWidth="xxdp"
+11.Tab的“Margin”
+TabLayout开始位置的偏移量：
+app:tabContentStart="100dp"	
+
+
+darwerLayout+navigationView
+
+
+
+
+
+Tablyout  + ViewPager
+
+
+	
+============================================Palatte应用===========================================
+	调色板  --》画
+	
+	画--》调色板
+	
+	
+	Palette是一个类似调色板的工具类，根据传入的bitmap，提取出主体颜色，使得图片和颜色更加搭配，界面更协调。
+Palette 可以从一张图片中提取颜色，我们可以把提取的颜色融入到App UI中，可以使UI风格更加美观融洽。比如，我们可以从图片中提取颜色设置给ActionBar做背景颜色，这样ActionBar的颜色就会随着显示图片的变化而变化。
+
+
+使用
+
+ 1   compile 'com.android.support:palette-v7:23.4.0'
+     Palette可以提取的颜色如下:
+  ● Vibrant （有活力的）
+  ● Vibrant dark（有活力的 暗色）
+  ● Vibrant light（有活力的 亮色）
+  ● Muted （柔和的）
+  ● Muted dark（柔和的 暗色）
+  ● Muted light（柔和的 亮色）
+第一步  compile 'com.android.support:palette-v7:23.4.0'
+
+第一步，我们需要通过一个Bitmap对象来生成一个对应的Palette对象。 Palette 提供了四个静态方法用来生成对象。
+  ● Palette generate(Bitmap bitmap)
+  ● Palette generate(Bitmap bitmap, int numColors)
+  ● generateAsync(Bitmap bitmap, PaletteAsyncListener listener)
+  ● generateAsync(Bitmap bitmap, int numColors, final PaletteAsyncListener listener)
+不难看出，生成方法分为generate(同步)和generateAsync(异步)两种，如果图片过大使用generate方法，可能会阻塞主线程，我们更倾向于使用generateAsync的方法，其实内部就是创建了一个AsyncTask。generateAsync方法需要一个PaletteAsyncListener对象用于监听生成完毕的回调。除了必须的Bitmap参数外，还可以传入一个numColors参数指定颜色数，默认是 16。
+第二步，得到Palette对象后，就可以拿到提取到的颜色值
+  ● Palette.getVibrantSwatch()
+  ● Palette.getDarkVibrantSwatch()
+  ● Palette.getLightVibrantSwatch()
+  ● Palette.getMutedSwatch()
+  ● Palette.getDarkMutedSwatch()
+  ● Palette.getLightMutedSwatch()
+第三步，使用颜色，上面get方法中返回的是一个 Swatch 样本对象，这个样本对象是Palette的一个内部类，它提供了一些获取最终颜色的方法。
+  ● getPopulation(): 样本中的像素数量
+  ● getRgb(): 颜色的RBG值
+  ● getHsl(): 颜色的HSL值
+  ● getBodyTextColor(): 主体文字的颜色值
+  ● getTitleTextColor(): 标题文字的颜色值
+通过 getRgb() 可以得到最终的颜色值并应用到UI中。getBodyTextColor() 和 getTitleTextColor() 可以得到此颜色下文字适合的颜色，这样很方便我们设置文字的颜色，使文字看起来更加舒服。
+		
+		
+
+
+	
+	
+	
+	
